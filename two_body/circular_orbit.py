@@ -1,3 +1,5 @@
+# Section 2.6 in "Orbital Mechanics for Engineering Students, Howard D. Curtis, 3rd edition"
+
 import numpy as np
 
 
@@ -33,3 +35,20 @@ def calculate_period(mu, R, altitude):
     period = (2 * np.pi) / np.sqrt(mu) * pow((R + altitude), 3 / 2)
 
     return period
+
+def calculate_coverage(R, altitude):
+    """Calculate the percent of surface that the satellite can see
+    
+    Inputs:
+    R_e - Radius of planet [km]
+    altitude - Altitude of satellite above planet surface [km]
+    
+    Output:
+    phi - Maximum latitude [degrees]
+    coverage - percentage of earth's surface visible to satellite
+    """
+
+    phi = np.rad2deg(np.arccos(R / (R + altitude)))
+    coverage = 100 * (1 - np.cos(np.deg2rad(phi))) / 2
+
+    return phi, coverage

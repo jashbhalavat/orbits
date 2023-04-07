@@ -58,11 +58,17 @@ def main(
     R_earth = 6378  # km
 
     if eccentricity == 0:
+        # Circular orbit
         speed = circular_orbit.calculate_speed(mu_earth, R_earth, semimajor_axis)
         period = circular_orbit.calculate_period(mu_earth, R_earth, semimajor_axis)
+        phi, coverage = circular_orbit.calculate_coverage(R_earth, semimajor_axis)
 
-    print("Speed is:", speed, "km/s")
-    print("Period is:", period, "s")
+        print("Speed:", speed, "km/s")
+        print("Period:", period, "s")
+        print("Maximum latitude:", phi, "degrees")
+        print("Percentage of surface area visible to spacecraft:", coverage, "%")
+    elif eccentricity > 0 and eccentricity < 1:
+        # Elliptical orbit
 
 
 if __name__ == "__main__":
