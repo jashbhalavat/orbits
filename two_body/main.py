@@ -10,30 +10,24 @@ import circular_orbit
 @click.option(
     "-e", "--eccentricity", default=None, type=float, help="Orbit eccentricity"
 )
-@click.option("-a", "--semimajor_axis", default=None, type=float, help="Semimajor axis")
-@click.option("-i", "--inclination", default=None, type=float, help="Orbit inclination")
 @click.option(
-    "-o",
-    "--longitude_of_ascending_node",
+    "-r_p",
+    "--radius_of_perigee",
     default=None,
     type=float,
-    help="Longitude of ascending node",
+    help="Perigee altitude from planet surface [km]",
 )
 @click.option(
-    "-w",
-    "--argument_of_periapsis",
+    "-r_a",
+    "--radius_of_apogee",
     default=None,
     type=float,
-    help="Argument of periapsis",
+    help="Apogee altitude from planet surface [km]",
 )
-@click.option("-t", "--true_anomaly", default=None, type=float, help="True anomaly")
 def main(
     eccentricity,
-    semimajor_axis,
-    inclination,
-    longitude_of_ascending_node,
-    argument_of_periapsis,
-    true_anomaly,
+    r_perigee,
+    r_apogee
 ):
     """Decides which type of orbit function to call depending on the eccentricity
 
@@ -41,16 +35,14 @@ def main(
 
     Inputs:
     Eccentricity
-    Semimajor Axis
-    Inclination
-    Longitude of Ascending Node
-    Argument of Periapsis
-    True Anomaly
+    Perigee Radius
+    Apogee Radius
 
     Outputs:
     """
 
     # TODO - Parameters.json, library
+    # TODO - Find a more generic way to compute elements
 
     # Variables
     G = 6.67430e-11  # Nm^2 / kg^s
@@ -59,9 +51,12 @@ def main(
 
     if eccentricity == 0:
         # Circular orbit
-        speed = circular_orbit.calculate_speed(mu_earth, R_earth, semimajor_axis)
-        period = circular_orbit.calculate_period(mu_earth, R_earth, semimajor_axis)
-        phi, coverage = circular_orbit.calculate_coverage(R_earth, semimajor_axis)
+        if r_perigee != r_apogee:
+            print("Eccentricity is zero (indicates circular orbit), but apogee and perigee radii are different")
+            return
+        speed = circular_orbit.calculate_speed(mu_earth, R_earth, r_perigee)
+        period = circular_orbit.calculate_period(mu_earth, R_earth, r_perigee)
+        phi, coverage = circular_orbit.calculate_coverage(R_earth, r_apogee)
 
         print("Speed:", speed, "km/s")
         print("Period:", period, "s")
@@ -69,6 +64,7 @@ def main(
         print("Percentage of surface area visible to spacecraft:", coverage, "%")
     elif eccentricity > 0 and eccentricity < 1:
         # Elliptical orbit
+
 
 
 if __name__ == "__main__":
