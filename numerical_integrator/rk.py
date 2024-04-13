@@ -4,7 +4,7 @@ import numpy as np
 def rk1_4(ode_function, tspan, y0, h, rk):
     """Algorithm 1.1 in Orbital Mechanics for Engineering Students (3rd edition)
 
-    This function uses a selecte Runge-Kutta procedure to integrate a system of first-order differential equations dy/dt = f(t,y)
+    This function uses a selected Runge-Kutta procedure to integrate a system of first-order differential equations dy/dt = f(t,y)
 
     Inputs:
         ode_function - function where derivates f are computed
