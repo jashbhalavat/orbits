@@ -6,6 +6,8 @@ def rk45(ode_function, tspan, y0, tolerance=1e-4):
 
     This function uses Runge-Kutta with variable step size
 
+    "THIS IS INCOMPLETE, DO NOT USE! USE RK/HEUN'S METHOD INSTEAD"
+
     Inputs:
         ode_function - function where derivates f are computed
         tspan - the vector [t0 tf] giving the time interval for the solution
