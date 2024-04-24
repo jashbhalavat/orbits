@@ -24,11 +24,17 @@ tf = 70 * minutes
 
 [t, f] = rk45.rk45(rates, [t0, tf], y0)
 
+pos = np.empty(len(f))
+vel = np.empty(len(f))
+for i in range(len(pos)):
+    pos[i] = f[i][0]
+    vel[i] = f[i][1]
+
 plt.figure()
 plt.subplot(2, 1, 1)
-plt.plot(t, f[:, 0], label="rk45")
-plt.title("Position")
-plt.subplot(2, 1, 1)
-plt.plot(t, f[:, 1], label="rk45")
+plt.plot(t, pos, label="rk45")
+plt.subplot(2, 1, 2)
+plt.plot(t, vel, label="rk45")
 plt.title("Velocity")
+plt.legend()
 plt.savefig("example_1_20.jpg")

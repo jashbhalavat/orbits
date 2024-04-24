@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def rk45(ode_function, tspan, y0, tolerance=1e-8):
+def rk45(ode_function, tspan, y0, tolerance=1e-4):
     """Algorithm 1.3 in Orbital Mechanics for Engineering Students (3rd edition)
 
     This function uses Runge-Kutta with variable step size
@@ -25,7 +25,7 @@ def rk45(ode_function, tspan, y0, tolerance=1e-8):
             [-8 / 27, 2, -3544 / 2565, 1859 / 4104, -11 / 40],
         ]
     )
-    c4 = np.array([26 / 216, 0.0, 1408 / 2565, 2197 / 4104, -1 / 5, 0])
+    c4 = np.array([25 / 216, 0.0, 1408 / 2565, 2197 / 4104, -1 / 5, 0])
     c5 = np.array([16 / 315, 0.0, 6656 / 12825, 28561 / 56430, -9 / 50, 2 / 55])
 
     t0 = tspan[0]
@@ -36,23 +36,22 @@ def rk45(ode_function, tspan, y0, tolerance=1e-8):
     for i in range(len(y0)):
         y[i] = y0[i]
     tout = [t]
-    yout = [y0[0]]
+    yout = [y0]
 
     h = (tf - t0) / 100.0
 
-    f = np.empty([2, 6])
+    f = np.empty([len(y0), 6])
 
     while t < tf:
-        hmin = 16 * t
+        hmin = 160 * t
         ti = t
         yi = y
-        fi = ode_function(ti, yi)
         # Evaluate the time derivative at six points within the current interval
         for i in range(6):
             t_inner = ti + a[i] * h
             y_inner = yi
             for j in range(i - 1):
-                temp = h * np.dot(b[i, j], f[:, j])
+                temp = h * b[i, j] * f[:, j]
                 y_inner[0] += temp[0]
                 y_inner[1] += temp[1]
             temp = ode_function(t_inner, y_inner)
@@ -69,17 +68,17 @@ def rk45(ode_function, tspan, y0, tolerance=1e-8):
 
         h = min(h, tf - t)
         t = t + h
-        y = yi + h * f * c5
+        mat_product = np.matmul(f, c5)
+        y[0] = yi[0] + h * mat_product[0]
+        y[1] = yi[1] + h * mat_product[1]
         tout.append(t)
-        yout.append(y)
+        temp_y = [y[0][0], y[1][0]]
+        yout.append(temp_y)
 
         h = min(delta * h, 4 * h)
         if h < hmin:
             print(
                 f"Warning: Step size fell below its minimum allowable value {hmin} at time {t}"
             )
-            return
-
-        print(t)
 
     return [tout, yout]
