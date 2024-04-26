@@ -42,33 +42,37 @@ def rk1_4(ode_function, tspan, y0, h, rk):
     tf = tspan[1]
 
     t = t0
-    y = np.empty([len(y0), 1])
-    for i in range(len(y0)):
-        y[i] = y0[i]
+    y = y0
     tout = [t]
-    yout = [y0[0]]  # Doesn't work if y is 3d
+    yout = y0  # Doesn't work if y is 3d
 
     f = np.empty([len(y0), rk])
 
     while t < tf:
         ti = t
-        yi = y
+        yi = y.flatten()
 
         for i in range(n_stages):
             t_inner = ti + a[i] * h
             y_inner = yi
 
-            for j in range(i - 1):
-                y_inner = y_inner + h * b[i, j] * f[:, j]
+            for j in range(i):
+                # print(f"{f[:,j].shape=}")
+                y_inner += h * b[i, j] * f[:, j]
 
-            f[:, i] = ode_function(t_inner, y_inner).reshape(
-                2,
-            )
+            # print(f"{y_inner.shape=}")
+            f[:, i] = ode_function(t_inner, y_inner)
 
         h = min(h, tf - t)
         t = t + h
-        y = yi + h * np.matmul(f, c)
+        y = yi.reshape(len(y0), 1) + h * np.matmul(f, c)
         tout.append(t)
-        yout.append(y[0][0])
+        if yout.shape == (len(y0),):
+            yout = np.concatenate((yout.reshape(len(y0), 1), y), axis=1)
+        else:
+            yout = np.concatenate((yout, y), axis=1)
+        # print(f"{y.shape=}")
+        # print(f"{yout.shape=}")
+        # print("once~")
 
     return [tout, yout]
