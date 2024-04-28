@@ -41,7 +41,7 @@ V2_0 = np.array([0.0, 40.0, 0.0])
 
 y0 = np.concatenate((R1_0, R2_0, V1_0, V2_0), axis=None)
 
-h = 1
+h = 0.01
 
 [t, y] = rk.rk1_4(rates, tspan, y0, h, 4)
 

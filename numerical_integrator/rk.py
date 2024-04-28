@@ -17,22 +17,22 @@ def rk1_4(ode_function, tspan, y0, h, rk):
     match rk:
         case 1:
             n_stages = 1
-            a = np.array([[0]])
-            b = 0
+            a = np.array([0])
+            b = np.array([0])
             c = np.array([[1]])
         case 2:
             n_stages = 2
-            a = np.array([[0], [1]])
+            a = np.array([0, 1])
             b = np.array([[0], [1]])
             c = np.array([[1 / 2], [1 / 2]])
         case 3:
             n_stages = 3
-            a = np.array([[0], [1 / 2], [1]])
+            a = np.array([0, 1 / 2, 1])
             b = np.array([[0, 0], [1 / 2, 0], [-1, 2]])
             c = np.array([[1 / 6], [2 / 3], [1 / 6]])
         case 4:
             n_stages = 4
-            a = np.array([[0], [1 / 2], [1 / 2], [1]])
+            a = np.array([0, 1 / 2, 1 / 2, 1])
             b = np.array([[0, 0, 0], [1 / 2, 0, 0], [0, 1 / 2, 0], [0, 0, 1]])
             c = np.array([[1 / 6], [1 / 3], [1 / 3], [1 / 6]])
         case _:
@@ -55,7 +55,7 @@ def rk1_4(ode_function, tspan, y0, h, rk):
         for i in range(n_stages):
             t_inner = ti + a[i] * h
             y_inner = yi
-
+            
             for j in range(i):
                 # print(f"{f[:,j].shape=}")
                 y_inner += h * b[i, j] * f[:, j]

@@ -13,17 +13,19 @@ w = 0.4 * wn
 
 
 def rates(t, f):
-    x = f[0][0]
-    dx = f[1][0]
-    d2x = F0 / m * np.sin(w * t[0]) - 2 * z * wn * dx - pow(wn, 2) * x
+    f = f.flatten()
+    x = f[0]
+    dx = np.array([f[1]])
+    d2x = F0 / m * np.sin(w * t) - 2 * z * wn * dx - pow(wn, 2) * x
 
-    dfdt = np.array([[dx], [d2x]])
+    # dfdt = np.array([[dx], [d2x]])
+    dfdt = np.concatenate((dx, d2x), axis=0)
     return dfdt
 
 
-x0 = 0.0
-x_dot0 = 0.0
-f0 = [x0, x_dot0]
+x0 = np.array([0.0])
+x_dot0 = np.array([0.0])
+f0 = np.concatenate((x0, x_dot0), axis=None)
 
 t0 = 0.0
 tf = 110.0
@@ -31,7 +33,7 @@ tspan = [t0, tf]
 
 # RK1
 h = 0.01
-[t1, f1] = rk.rk1_4(rates, tspan, f0, h, 4)
+[t1, f1] = rk.rk1_4(rates, tspan, f0, h, 3)
 
 
 # Exact soln
@@ -57,7 +59,7 @@ for i in range(len(t)):
 
 
 plt.figure()
-plt.plot(t1, f1, label="rk")
-plt.plot(t, x, label="true")
+plt.plot(t1/np.max(t1), f1[0,:]/np.max(f1[0,:]), label="rk")
+plt.plot(t/np.max(t), x/np.max(x), label="true")
 plt.legend()
 plt.savefig("example_1_18.jpg")
