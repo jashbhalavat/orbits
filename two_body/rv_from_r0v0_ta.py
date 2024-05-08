@@ -17,9 +17,8 @@ def rv_from_r0v0_ta(r0, v0, dt, mu):
     v - final velocity vector (km/s)
     """
     f, g, fdot, gdot = lagrange_functions.f_and_g_ta(r0, v0, dt, mu)
-    
-    r = f*r0 + g*v0
-    v = fdot*r0 + gdot*v0
+
+    r = f * r0 + g * v0
+    v = fdot * r0 + gdot * v0
 
     return r, v
-

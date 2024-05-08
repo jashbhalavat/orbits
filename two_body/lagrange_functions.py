@@ -30,14 +30,16 @@ def f_and_g_ta(r0, v0, dt, mu):
     c = np.cos(np.deg2rad(dt))
 
     # Eq. 2.152
-    r = (pow(h, 2) / mu) * (1 / ((1 + (pow(h, 2) / mu / r0_unit - 1) * c - h * vr0 * s / mu)))
+    r = (pow(h, 2) / mu) * (
+        1 / ((1 + (pow(h, 2) / mu / r0_unit - 1) * c - h * vr0 * s / mu))
+    )
 
     # Eq. 2.158a and 2.158b
     f = 1 - mu * r * (1 - c) / pow(h, 2)
     g = r * r0_unit * s / h
 
     # Eq. 2.158c and 2.158d
-    fdot = mu / h * ((1-c)/s) * (mu/pow(h, 2) * (1-c) - 1/r0_unit - 1/r)
+    fdot = mu / h * ((1 - c) / s) * (mu / pow(h, 2) * (1 - c) - 1 / r0_unit - 1 / r)
     gdot = 1 - mu * r0_unit / pow(h, 2) * (1 - c)
     print(gdot)
 
