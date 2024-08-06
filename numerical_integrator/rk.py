@@ -36,7 +36,6 @@ def rk1_4(ode_function, tspan, y0, h, rk):
         c = np.array([[1 / 6], [1 / 3], [1 / 3], [1 / 6]])
     else:
         print(f"rk must be 1, 2, 3, or 4, but it was {rk}.")
-        print("\n")
 
     t0 = tspan[0]
     tf = tspan[1]
