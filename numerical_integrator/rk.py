@@ -45,10 +45,11 @@ def rk1_4(ode_function, tspan, y0, h, rk):
     for i in range(len(y0)):
         y[i] = y0[i]
     tout = [t]
-    yout = [y0[0]]  # Doesn't work if y is 3d
+    yout = np.array(y0)  # Doesn't work if y is 3d
+    yout = yout.reshape(1, len(y0))
 
     f = np.empty([len(y0), rk])
-
+    count = 0
     while t < tf:
         ti = t
         yi = y
@@ -57,8 +58,12 @@ def rk1_4(ode_function, tspan, y0, h, rk):
             t_inner = ti + a[i] * h
             y_inner = yi
 
-            for j in range(i - 1):
-                y_inner = y_inner + h * b[i, j] * f[:, j]
+            for j in range(i):
+                y_inner_temp = np.zeros_like(y_inner)
+                for k in range(len(y_inner)):
+                    y_inner_temp[k] = y_inner[k] + h * b[i, j] * f[k, j]
+                y_inner = y_inner_temp
+            
 
             f[:, i] = ode_function(t_inner, y_inner).reshape(
                 2,
@@ -68,6 +73,6 @@ def rk1_4(ode_function, tspan, y0, h, rk):
         t = t + h
         y = yi + h * np.matmul(f, c)
         tout.append(t)
-        yout.append(y[0][0])
+        yout = np.append(yout, np.transpose(y), axis=0)
 
     return [tout, yout]
