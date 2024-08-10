@@ -49,7 +49,7 @@ def rk1_4(ode_function, tspan, y0, h, rk):
     yout = yout.reshape(1, len(y0))
 
     f = np.empty([len(y0), rk])
-    count = 0
+
     while t < tf:
         ti = t
         yi = y
