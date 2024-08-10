@@ -63,7 +63,6 @@ def rk1_4(ode_function, tspan, y0, h, rk):
                 for k in range(len(y_inner)):
                     y_inner_temp[k] = y_inner[k] + h * b[i, j] * f[k, j]
                 y_inner = y_inner_temp
-            
 
             f[:, i] = ode_function(t_inner, y_inner).reshape(
                 2,

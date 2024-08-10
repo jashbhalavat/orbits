@@ -56,7 +56,7 @@ for i in range(len(t)):
 
 
 plt.figure()
-plt.plot(t1, f1[:,0], label="rk")
+plt.plot(t1, f1[:, 0], label="rk")
 plt.plot(t, x, label="true")
 plt.legend()
 plt.savefig("example_1_18.jpg")
