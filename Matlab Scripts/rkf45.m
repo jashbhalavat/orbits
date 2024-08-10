@@ -79,6 +79,7 @@ yout = y';
 h = (tf - t0)/100; % Assumed initial time step.
 while t < tf
     hmin = 16*eps(t);
+    disp(hmin);
     ti = t;
     yi = y;
     %...Evaluate the time derivative(s) at six points within the current
