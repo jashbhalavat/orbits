@@ -15,7 +15,6 @@ w = 0.4 * wn
 def rates(t, f):
     x = f[0][0]
     dx = f[1][0]
-    print(t)
     d2x = F0 / m * np.sin(w * t[0]) - 2 * z * wn * dx - pow(wn, 2) * x
 
     dfdt = np.array([[dx], [d2x]])

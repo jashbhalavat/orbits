@@ -31,8 +31,7 @@ tspan = [t0, tf]
 
 # RK1
 h = 0.01
-[t1, f1] = rk.rk1_4(rates, tspan, f0, h, 4)
-
+[t1, f1] = rk.rk1_4(rates, tspan, f0, h, 1)
 
 # Exact soln
 wd = wn * np.sqrt(1 - pow(z, 2))
@@ -57,7 +56,7 @@ for i in range(len(t)):
 
 
 plt.figure()
-plt.plot(t1, f1, label="rk")
+plt.plot(t1, f1[:,0], label="rk")
 plt.plot(t, x, label="true")
 plt.legend()
 plt.savefig("example_1_18.jpg")
